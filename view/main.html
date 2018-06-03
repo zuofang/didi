@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/main.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="userpanel_btn" class="mui-icon mui-icon-contact mui-pull-left"></a>
+			<h1 class="mui-title">垃圾回收</h1>
+			<a class="mui-icon mui-icon-chat mui-pull-right"></a>
+		</header>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				statusBarBackground: '#fff'
+			});
+			var aniShow = "pop-in";
+			var menu = null,
+				showMenu = false;
+			var isInTransition = false;
+			var _self;
+			//初始化，并预加载webview模式的选项卡			
+			function preload() {
+
+				var menu_style = {
+					left: "-40%",
+					width: '40%',
+					popGesture: "none",
+					render: "always"
+				};
+
+//				if(mui.os.ios) {
+//					menu_style.zindex = -1;
+//				}
+
+				//处理侧滑导航，为了避免和子页面初始化等竞争资源，延迟加载侧滑页面；
+				menu = mui.openWindow({
+					id: 'main-menu',
+					url: 'main-menu.html',
+					styles: menu_style,
+					show: {
+						aniShow: 'none'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			}
+			mui.plusReady(function() {
+				_self = plus.webview.currentWebview();
+				//仅支持竖屏显示
+				plus.screen.lockOrientation("portrait-primary");
+				if(_self.mainpage == "admin") {
+					var dirverView = plus.webview.create('dirver.html','dirver',{
+						top:'45px',
+						bottom:'0px'
+					})
+					_self.append(dirverView);
+					dirverView.show();
+				} else {
+					var guestView = plus.webview.create('guest.html','guest',{
+						top:'45px',
+						bottom:'0px'
+					})
+					
+					_self.append(guestView);
+					guestView.show();
+				}
+				
+				//延迟的原因：优先打开启动导航页面，避免资源争夺
+				setTimeout(function() {
+					//预加载
+					preload();
+				}, 200);
+
+			document.getElementById('userpanel_btn').addEventListener('tap',function(){
+				openMenu();
+			})
+			//启用侧滑拖拽操作，延时的原因是menu页是延时创建的，所以这里需要相应延时
+			setTimeout(function() {
+				_self.drag({
+					direction: "right",
+					moveMode: "followFinger"
+				}, {
+					view: menu,
+					moveMode: "follow"
+				}, function(e) {
+					//console.log(JSON.stringify(e));
+				});
+			}, 350);
+
+			});
+
+			/**
+			 * 显示侧滑菜单
+			 */
+			function openMenu() {
+				plus.webview.startAnimation({
+						'view': _self,
+						'styles': {
+							'fromLeft': '0',
+							'toLeft': "40%"
+						},
+						'action': 'show'
+					}, {
+						'view': menu,
+						'styles': {
+							'fromLeft': "-40%",
+							'toLeft': '0'
+						},
+						'action': 'show'
+					},
+					function(e) {
+						//console.log(JSON.stringify(e));
+						if(e.id == menu.id) { //侧滑菜单打开
+						}
+					}.bind(this)
+				)
+			};
+			/**
+			 * 关闭菜单
+			 */
+			function closeMenu() {
+				plus.webview.startAnimation({
+						'view': _self,
+						'styles': {
+							'fromLeft': '40%',
+							'toLeft': "0"
+						},
+						'action': 'show'
+					}, {
+						'view': menu,
+						'styles': {
+							'fromLeft': "0",
+							'toLeft': '-40%'
+						},
+						'action': 'show'
+					},
+					function(e) {
+						console.log(JSON.stringify(e));
+						if(e.id == _self.id) {}
+					}.bind(this)
+				)
+			};
+
+			var _toast = false;
+
+			mui.back = function() {
+				if(parseInt(_self.getStyle().left) > 0) {
+					closeMenu();
+					return;
+				}
+
+				if(!_toast || !_toast.isVisible()) {
+					_toast = mui.toast('再按一次返回键退出', {
+						duration: 'long',
+						type: 'div'
+					});
+				} else {
+					plus.runtime.quit();
+				}
+			}
+
+			//重写mui.menu方法，Android版本menu按键按下可自动打开、关闭侧滑菜单；
+			mui.menu = function() {
+				if(parseInt(_self.getStyle().left) > 0) {
+					closeMenu();
+				} else {
+					openMenu();
+				}
+			}
+		</script>
+	</body>
+
+</html>

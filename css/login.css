@@ -1,0 +1,54 @@
+html,body {
+	height: 100%;
+}
+body {
+	background: #fff;
+}
+.login-container {
+	width: 80%;
+	margin: 100px auto 0 auto;
+}
+.logo-container {
+	text-align: center;
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+	text-align: center;
+}
+.logo-container img {
+	width: 100%;
+}
+.login-title {
+	margin: 0 auto 40px auto;
+	font-size: 16px;
+	color: #6D6D72;
+	text-indent: 4px;
+	font-weight: normal;
+	text-align: center;
+}
+.login-row {
+	height: 60px;
+	line-height: 60px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #c8c7cc;
+}
+.login-row label {
+	width: 30px;
+}
+.login-row input{
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	border:none;
+}
+.login-action {
+	margin-top: 40px;
+}
+.login-action button {
+	height: 50px;
+	line-height: 50px;
+	padding: 0;
+}

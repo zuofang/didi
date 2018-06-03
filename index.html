@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>登录</title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link href="css/login.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="login-container">
+		<div class="logo-container">
+			<img src="img/logo.jpeg"/>
+		</div>
+		<h3 class="login-title">垃圾回收</h3>
+		<div class="login-panel">
+			<div class="login-row">
+				<label class="mui-icon mui-icon-person"></label>
+				<input id="username" type="text" placeholder="请输入用户名" />
+			</div>
+			<div class="login-row">
+				<label class="mui-icon mui-icon-locked"></label>
+				<input id="password" type="password" placeholder="请输入密码" />
+			</div>
+			</div>
+			<div class="login-action">
+				<button id="login_btn" type="button" class="mui-btn mui-btn-warning mui-btn-block">登录</button>
+			</div>
+		</div>
+	</div>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	mui.plusReady(function() {
+      		document.getElementById('login_btn').addEventListener('tap', function(){
+      			var username = document.getElementById('username').value;
+      			var password = document.getElementById('password').value;
+      			if(username==""||password=="") {
+      				mui.toast('用户或密码不能为空');
+      				return;
+      			}
+      			var extras = {mainpage:""};
+      			if(username == "admin") {
+      				extras.mainpage = 'admin';
+      			}
+      			mui.openWindow({
+	      			url: './view/main.html',
+	      			id: 'main',
+	      			extras:extras
+	      		})
+      		})
+      	})
+    </script>
+</body>
+</html>

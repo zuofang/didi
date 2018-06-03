@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<style>
+			html,body {
+				height: 100%;
+			}
+			.amap-logo,.amap-copyright {
+				display: none!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">订单详情</h1>
+		</header>
+		<div id="map_container" class="map-container"></div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.6&key=c662fdb7d66aab5a3bdb7dd25c04459c"></script>
+		<script type="text/javascript">
+			 var map;
+			mui.ready(function(){
+				map = new AMap.Map('map_container', {
+			        zoom:11,//级别
+			        center: [116.397428, 39.90923],//中心点坐标
+			    });
+			})
+			mui.plusReady(function(){
+				
+			    plus.geolocation.getCurrentPosition(function(p) {
+			    		AMap.convertFrom([p.coords.longitude,p.coords.latitude], 'gps', function (status, result) {
+					  if (result.info === 'ok') {
+					    var lnglats = result.locations;
+					    var ll = [lnglats[0].lng,lnglats[0].lat]
+					    map.setZoomAndCenter(13,ll);
+					    var marker = new AMap.Marker({
+					        position:ll
+					    })
+					    map.add(marker);
+					    AMap.plugin('AMap.Driving', function() {
+						    	var driving = new AMap.Driving({
+						        map: map
+						    }); 
+						    // 根据起终点经纬度规划驾车导航路线
+						    driving.search(new AMap.LngLat(ll[0], ll[1]), new AMap.LngLat(116.372703, 39.940623));
+					    });
+					    
+					  } else {
+					  	mui.toast('坐标转换失败');
+					  }
+					});
+			    },function(e){
+			    		mui.toast(e.message);
+			    },{
+			    		provider:'system'
+			    });
+			})
+		</script>
+	</body>
+
+</html>
