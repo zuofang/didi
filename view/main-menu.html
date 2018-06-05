@@ -28,12 +28,12 @@
 				<p class="username">江小白</p>
 			</div>
 			
-			<ul class="user-menu-list">
-				<li class="menu-item">
+			<ul id="menu_list" class="user-menu-list">
+				<li class="menu-item" data-target="order">
 					<i class="mui-icon mui-icon-home"></i>
 					订单
 				</li>
-				<li class="menu-item">
+				<li class="menu-item" data-target="setting">
 					<i class="mui-icon mui-icon-settings"></i>
 					设置
 				</li>
@@ -53,6 +53,22 @@
 					view: index,
 					moveMode: "follow"
 				}, function(e) {});
+				
+				var menu = {
+					order: {
+						id: 'order',
+						url: 'order.html'
+					},
+					setting: {
+						id: 'setting',
+						url: 'setting.html'
+					}
+				};
+				
+				mui('#menu_list').on('tap', '.menu-item', function(){
+					var target = this.dataset.target;
+					mui.openWindow(menu[target].url,menu[target].id);
+				})
 
 			})
 

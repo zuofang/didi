@@ -27,6 +27,7 @@
 				showMenu = false;
 			var isInTransition = false;
 			var _self;
+			var isClose = false;
 			//初始化，并预加载webview模式的选项卡			
 			function preload() {
 
@@ -82,7 +83,11 @@
 				}, 200);
 
 			document.getElementById('userpanel_btn').addEventListener('tap',function(){
-				openMenu();
+//				if(isClose) {
+					openMenu();
+//				} else {
+//					closeMenu();
+//				}
 			})
 			//启用侧滑拖拽操作，延时的原因是menu页是延时创建的，所以这里需要相应延时
 			setTimeout(function() {
@@ -103,6 +108,7 @@
 			 * 显示侧滑菜单
 			 */
 			function openMenu() {
+				isClose = true;
 				plus.webview.startAnimation({
 						'view': _self,
 						'styles': {
@@ -129,6 +135,7 @@
 			 * 关闭菜单
 			 */
 			function closeMenu() {
+				isClose = false;
 				plus.webview.startAnimation({
 						'view': _self,
 						'styles': {
@@ -145,7 +152,6 @@
 						'action': 'show'
 					},
 					function(e) {
-						console.log(JSON.stringify(e));
 						if(e.id == _self.id) {}
 					}.bind(this)
 				)

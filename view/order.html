@@ -10,15 +10,24 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../css/main.css" />
 		<style>
-			html,body {
-				height: 100%;
-				background: #fff;
+			#logout_btn {
+				width: 80%;
+				height: 40px;
+				line-height: 40px;
+				font-size: 15px;
+				margin: 30px auto;
+				padding: 0;
 			}
 		</style>
 	</head>
 
 	<body>
-		<ul id="dirver_list" class="dirver-pay-list">
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">订单</h1>
+		</header>
+		<div class="mui-content">
+		    <ul id="dirver_list" class="dirver-pay-list" style="background: #fff;">
 			<li class="pay-item">
 				<h3 class="position"><i class="mui-icon mui-icon-location-filled" style="color: #CF2D28;"></i>南京市建邺区油坊桥</h3>
 				<h4 class="time">2018-6-2</h4>
@@ -36,15 +45,10 @@
 				<h4 class="time">2018-6-2</h4>
 			</li>
 		</ul>
+		</div>
 		<script src="../js/mui.min.js"></script>
-		<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.6&key=c662fdb7d66aab5a3bdb7dd25c04459c"></script>
-		<script type="text/javascript">
-			
-			mui.plusReady(function(){
-				mui('#dirver_list').on('tap','.pay-item',function(){
-					mui.openWindow('dirver-detail.html','dirver_detail');
-				})
-			})
+		<script>
+
 		</script>
 	</body>
 
